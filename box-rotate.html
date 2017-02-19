@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>盒子旋转</title>
+	<style>
+		.box{
+			width: 300px;
+			height: 300px;
+			position: fixed;
+			top: 0;bottom: 0;left: 0;right: 0;
+			margin: auto;
+			perspective:3000px;
+		}
+		.inner{
+			width: 100%;
+			height: 100%;
+			position: relative;
+			transform-style:preserve-3d;
+			/*transition:transform 3s ease;*/
+		}
+		.inner:hover{
+			/*transform:rotateY(100deg);*/
+		}
+		.inner div{
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			text-align: center;
+			font-size: 40px;
+			color: #000;
+			line-height: 300px;
+			border-radius: 30px;
+		}
+		.inner div:nth-child(1){
+			background: red;
+			transform-origin:top;
+			transform:rotateX(90deg);
+		}
+		.inner div:nth-child(2){
+			background: yellow;
+			transform-origin:left;
+			transform:rotateY(-90deg);
+		}
+		.inner div:nth-child(3){
+			background: pink;
+			transform-origin:right;
+			transform:rotateY(90deg);
+		}
+		.inner div:nth-child(4){
+			background: plum;
+			transform-origin:bottom;
+			transform:rotateX(-90deg);
+		}
+		.inner div:nth-child(5){
+			background: orange;
+		}
+		.inner div:nth-child(6){
+			background: blue;
+			transform:translateZ(300px);
+		}
+	</style>
+</head>
+<body>
+	<div class="box">
+		<div class="inner">
+			<div>01</div>
+			<div>02</div>
+			<div>03</div>
+			<div>04</div>
+			<div>05</div>
+			<div>06</div>
+		</div>
+	</div>
+</body>
+<script>
+	window.onload=function(){
+		var dx=document.documentElement.clientWidth/2;
+		var dy=document.documentElement.clientHeight/2;
+		var inner=document.getElementsByClassName("inner")[0];
+		// alert(dx);  alert(dy);
+		document.onmousedown=function(e){
+			var cx=e.clientX;
+			var cy=e.clientY;
+			// alert(cx);  alert(cy);
+			document.onmousemove=function(e){
+				var mx=e.clientX;
+				var my=e.clientY;
+				// alert(mx);  alert(my);
+				var x=mx-dx;           
+				var y=my-dy;
+				var mo=Math.sqrt(x*x+y*y);    
+				var mox=x/mo;   //单位向量
+				var moy=y/mo;   
+
+				// var angle=Math.sqrt((mx-cx)*(mx-cx)+(my-cy)*(my-cy));  
+				var angle=Math.sqrt(Math.pow((mx-cx),2)+Math.pow((my-cy),2));
+				// inner.style.transform="rotate3d("+mox+","+moy+",0,"+angle+"deg)";
+				inner.style.transform="rotate3d("+(-moy)+","+mox+",0,"+angle+"deg)";
+			}
+			document.onmouseup=function(){
+				document.onmouseup=null;
+				document.onmousemove=null;
+			}
+		}
+	}
+</script>
+</html>
